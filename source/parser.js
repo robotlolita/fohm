@@ -1,9 +1,12 @@
 const Ohm = require("ohm-js");
-const toAST = require("ohm-js/extras");
+const { toAST } = require("ohm-js/extras");
 const fs = require("fs");
 const path = require("path");
 
-const grammarSource = fs.readFileSync(path.join(__dirname, "grammar.ohm"));
+const grammarSource = fs.readFileSync(
+  path.join(__dirname, "grammar.ohm"),
+  "utf8"
+);
 const grammar = Ohm.grammar(grammarSource);
 
 /**
@@ -44,12 +47,15 @@ const cstToAst = {
 
   Description: 1,
 
+  Formals: 1,
   Params: 1,
+
+  Alternative: 1,
 
   Action_action: {
     type: "Action",
     body: 0,
-    block: 1
+    block: 2
   },
 
   Action_no_action: {
@@ -69,59 +75,85 @@ const cstToAst = {
     rule: 2
   },
 
-  Expr_repeat0: {
+  Iter_repeat0: {
     type: "Repeat0",
     rule: 0
   },
 
-  Expr_repeat1: {
+  Iter_repeat1: {
     type: "Repeat1",
     rule: 0
   },
 
-  Expr_optional: {
+  Iter_optional: {
     type: "Optional",
     rule: 0
   },
 
-  Expr_lookahead: {
+  Pred_lookahead: {
     type: "Lookahead",
     rule: 1
   },
 
-  Expr_negation: {
+  Pred_negation: {
     type: "Negation",
     rule: 1
   },
 
-  Expr_lexify: {
+  Lex_lexify: {
     type: "Lexify",
     rule: 1
   },
 
-  Term_apply: {
+  Base_apply: {
     type: "Apply",
     rule: 0,
-    args: 2
+    args: 1
   },
 
-  Term_name: {
-    type: "Named",
-    rule: 0
-  },
-
-  Term_range: {
+  Base_range: {
     type: "Range",
     start: 0,
     end: 2
   },
 
-  Term_literal: {
+  Base_literal: {
     type: "Literal",
     value: 0
   },
 
-  Term_group: 1,
+  Base_group: 1,
+
+  string: 0,
+  string_raw: 1,
+  string_double: 1,
+  string_character: 0,
+  string_character_escaped: 1,
+
+  escape_sequence_backspace(_) {
+    return "\b";
+  },
+  escape_sequence_form_feed(_) {
+    return "\f";
+  },
+  escape_sequence_newline(_) {
+    return "\n";
+  },
+  escape_sequence_return(_) {
+    return "\r";
+  },
+  escape_sequence_tab(_) {
+    return "\t";
+  },
+  escape_sequence_unicode(_, hex) {
+    return String.fromCodePoint(parseInt(hex.toAST(cstToAst), 16));
+  },
+  escape_sequence_quote(_) {
+    return '"';
+  },
+  escape_sequence_backslash(_) {
+    return "\\";
+  },
 
   code: 1
 };

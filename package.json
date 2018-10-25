@@ -1,0 +1,35 @@
+{
+  "name": "fohm",
+  "version": "1.0.0",
+  "description": "Ohm, a PEG parser generator, for Fable, an F#->JS compiler",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "ohm-js": "^0.14.0",
+    "yargs": "^12.0.2"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robotlolita/fohm.git"
+  },
+  "keywords": [
+    "fable",
+    "f#",
+    "peg",
+    "parsing"
+  ],
+  "author": "Quil",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/robotlolita/fohm/issues"
+  },
+  "homepage": "https://github.com/robotlolita/fohm#readme"
+}

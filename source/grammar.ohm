@@ -3,47 +3,61 @@ Peg {
     = code id "{" Rule* "}"
 
   Rule
-    = id Params? Description? op Alternative ";"
+    = id Formals? Description? op Alternative
 
   Description
     = "(" (~")" any)* ")"
 
-  Params
-    = "<" ListOf<id, ","> ">"
+  Formals
+    = "<" NonemptyListOf<id, ","> ">"
 
   Alternative
-    = NonemptyListOf<Action, "/">
+    = "|"? NonemptyListOf<Action, "|">
 
   Action
-    = Sequence code     -- action
-    | Sequence          -- no_action
+    = Sequence "->" code   -- action
+    | Sequence             -- no_action
 
   Sequence
     = Binding+
 
   Choice
-    = NonemptyListOf<Sequence, "/">  -- choice
+    = NonemptyListOf<Sequence, "|">  -- choice
     | Sequence
 
   Binding
-    = id ":" Expr      -- named
-    | Expr             -- unnamed
+    = id ":" Iter      -- named
+    | Iter             -- unnamed
 
-  Expr
-    = Expr "*"                           -- repeat0
-    | Expr "+"                           -- repeat1
-    | Expr "?"                           -- optional
-    | "&" Expr                           -- lookahead
-    | "~" Expr                           -- negation
-    | "#" Expr                           -- lexify
-    | Term                               -- term
+  Iter
+    = Pred "*"                           -- repeat0
+    | Pred "+"                           -- repeat1
+    | Pred "?"                           -- optional
+    | Pred
 
-  Term
-    = id "<" ListOf<Expr, ","> ">"     -- apply
-    | id                               -- name
-    | String ".." String               -- range
-    | String                           -- literal
-    | "(" Choice ")"                   -- group
+  Pred
+    = "&" Lex                           -- lookahead
+    | "~" Lex                           -- negation
+    | Lex
+
+  Lex
+    = "#" Base                          -- lexify
+    | Base
+
+  Base
+    = id Params? ~RuleDef                             -- apply
+    | String ".." String                              -- range
+    | String                                          -- literal
+    | "(" Choice ")"                                  -- group
+
+  RuleDef 
+    = Description? op
+
+  Params
+    = "<" NonemptyListOf<Iter, ","> ">"
+
+  String
+    = string
 
 
   // -- LEXICAL RULES -------------------------------------------------
@@ -63,9 +77,34 @@ Peg {
   id 
     = id_start id_rest*
 
+
+  raw_character 
+    = ~"\"\"\"" any
+
+  escape_sequence
+    = "b"                 -- backspace
+    | "f"                 -- form_feed
+    | "n"                 -- newline
+    | "r"                 -- return
+    | "t"                 -- tab
+    | "u" unicode_escape  -- unicode
+    | "\""                -- quote
+    | "\\"                -- backslash
+
+  string_character
+    = ~("\"" | "\\") any    -- non_escaped
+    | "\\" escape_sequence   -- escaped
+
+  unicode_escape 
+    = hexDigit hexDigit hexDigit hexDigit
+
+  string
+    = "\"\"\"" raw_character* "\"\"\""       -- raw
+    | "\"" string_character* "\""            -- double
+
   
   code
-    = "%{" (~"}%" any)* "}%"
+    = "/**" (~"**/" any)* "**/"
 
   op
     = "+=" | ":=" | "="

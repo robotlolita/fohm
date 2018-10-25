@@ -1,0 +1,72 @@
+Peg {
+  Grammar
+    = code id "{" Rule* "}"
+
+  Rule
+    = id Params? Description? op Alternative ";"
+
+  Description
+    = "(" (~")" any)* ")"
+
+  Params
+    = "<" ListOf<id, ","> ">"
+
+  Alternative
+    = NonemptyListOf<Action, "/">
+
+  Action
+    = Sequence code     -- action
+    | Sequence          -- no_action
+
+  Sequence
+    = Binding+
+
+  Choice
+    = NonemptyListOf<Sequence, "/">  -- choice
+    | Sequence
+
+  Binding
+    = id ":" Expr      -- named
+    | Expr             -- unnamed
+
+  Expr
+    = Expr "*"                           -- repeat0
+    | Expr "+"                           -- repeat1
+    | Expr "?"                           -- optional
+    | "&" Expr                           -- lookahead
+    | "~" Expr                           -- negation
+    | "#" Expr                           -- lexify
+    | Term                               -- term
+
+  Term
+    = id "<" ListOf<Expr, ","> ">"     -- apply
+    | id                               -- name
+    | String ".." String               -- range
+    | String                           -- literal
+    | "(" Choice ")"                   -- group
+
+
+  // -- LEXICAL RULES -------------------------------------------------
+  newline 
+    = "\n" | "\r"
+  line 
+    = (~newline any)*
+  comment 
+    = "//" line
+  space 
+    += comment
+
+  id_start 
+    = letter | "_"
+  id_rest 
+    = id_start | digit
+  id 
+    = id_start id_rest*
+
+  
+  code
+    = "%{" (~"}%" any)* "}%"
+
+  op
+    = "+=" | ":=" | "="
+}

@@ -2,7 +2,7 @@
 open Some.Namespace
 **/
 
-Peg {
+Peg : Foo {
   Rule1 = something ";"
   RuleParams<a, b, c> = yolo ";"
   RuleDesc (a description goes here) = rly ";"

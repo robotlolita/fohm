@@ -33,16 +33,21 @@ const cstToAst = {
     type: "Grammar",
     prelude: 0,
     name: 1,
-    rules: 3
+    type: 3,
+    rules: 5
   },
 
-  Rule: {
-    type: "Rule",
-    name: 0,
-    params: 1,
-    description: 2,
-    operator: 3,
-    alternatives: 4
+  Rule(name, params, desc, op, alternatives) {
+    return {
+      type: "Rule",
+      name: name.toAST(cstToAst),
+      params: params.toAST(cstToAst),
+      description: desc.toAst(cstToAst),
+      operator: op.toAST(cstToAst),
+      alternatives: alternatives
+        .toAST(cstToAst)
+        .map((x, i) => Object.assign(x, { index: i }))
+    };
   },
 
   Description: 1,

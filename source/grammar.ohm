@@ -1,6 +1,6 @@
 Peg {
   Grammar
-    = code id "{" Rule* "}"
+    = code id ":" id "{" Rule* "}"
 
   Rule
     = id Formals? Description? op Alternative

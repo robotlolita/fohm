@@ -4,4 +4,4 @@ Text {}
 Goes here
 **/
 
-Grammar { }
+Grammar : dynamic { }

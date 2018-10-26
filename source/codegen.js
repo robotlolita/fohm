@@ -102,7 +102,7 @@ function generate(node) {
     '     | Error of string
     '
     '   let parse (source: string): ParseResult<${id(node.resultType)}> = 
-    '     unbox makeParser(
+    '     !!makeParser(
     '       """
     '       ${indent(6, compileGrammar(node), DONT_INDENT_FIRST)}
     '       """, 

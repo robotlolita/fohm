@@ -190,9 +190,25 @@ function compileOhm(grammar) {
 function compileVisitor(grammar) {
   checkType("Grammar", grammar);
 
-  function compileAction(action) {
-    throw new Error("TODO:");
+  function compileAction(rule) {
+    return flatmap(rule.alternatives, (x, i) => {
+      if (x.block) {
+        const names = x.body
+          .filter(x => !["Negation", "Lookahead"].includes(x.rule.type))
+          .map((a, i) => (a.name ? a.name : `$${i}`))
+          .join(" ");
+
+        return [
+          code(`
+            ' ${string(`${rule.name}_alt${i}`)} ==> fun meta ${names} ->
+            '   ${indent(2, x.block)}
+          `)
+        ];
+      } else {
+        return [];
+      }
+    });
   }
 
-  return flatmap(grammar.rules, compileAction);
+  return flatmap(grammar.rules, compileAction).join("\n");
 }

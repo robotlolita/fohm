@@ -98,7 +98,7 @@ function generate(node) {
     '     Ok of T
     '     Error of string
     '
-    '   let parse (source: string): ParseResult<${id(node.type)}> = 
+    '   let parse (source: string): ParseResult<${id(node.resultType)}> = 
     '     unbox makeParser(${string(compileGrammar(node))}, visitor)
   `);
 }

@@ -33,7 +33,7 @@ const cstToAst = {
     type: "Grammar",
     prelude: 0,
     name: 1,
-    type: 3,
+    resultType: 3,
     rules: 5
   },
 

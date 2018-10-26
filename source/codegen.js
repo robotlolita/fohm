@@ -1,3 +1,5 @@
+const DONT_INDENT_FIRST = false;
+
 /**
  * Maps then flattens.
  *
@@ -51,11 +53,11 @@ function code(x) {
  * @param {number} spaces
  * @param {string} x
  */
-function indent(spaces, x) {
+function indent(spaces, x, indentFirst = true) {
   const padding = " ".repeat(spaces);
   return x
     .split(/\r\n|\r|\n/)
-    .map(line => `${padding}${line}`)
+    .map((line, i) => `${i !== 0 || indentFirst ? padding : ""}${line}`)
     .join("\n");
 }
 
@@ -81,7 +83,6 @@ function generate(node) {
 
   return code(`
     ' // This code was automatically generated from a grammar definition by Fohm.
-    ' // Instead of editing this file, edit the grammar definition and run Fohm again.
     '
     ' open Fable.Core.JsInterop
     ' module ${id(node.name)} =
@@ -99,7 +100,12 @@ function generate(node) {
     '     Error of string
     '
     '   let parse (source: string): ParseResult<${id(node.resultType)}> = 
-    '     unbox makeParser(${string(compileGrammar(node))}, visitor)
+    '     unbox makeParser(
+    '       """
+    '       ${indent(6, compileGrammar(node), DONT_INDENT_FIRST)}
+    '       """, 
+    '       visitor
+    '     )
   `);
 }
 
@@ -113,7 +119,11 @@ function compileGrammar(node) {
 
   return code(`
     ' ${id(node.name)} {
-    '   ${indent(2, node.rules.map(compileOhm(node)).join("\n\n"))}
+    '   ${indent(
+      2,
+      node.rules.map(compileOhm(node)).join("\n\n"),
+      DONT_INDENT_FIRST
+    )}
     ' }
   `);
 }
@@ -129,10 +139,14 @@ function compileOhm(grammar) {
     switch (node.type) {
       case "Rule": {
         const params = node.params ? `<${node.params.join(", ")}>` : "";
-        const desc = node.description ? `(${node.description})` : "";
+        const desc = node.description ? ` (${node.description})` : "";
         return code(`
-          ' ${node.name} ${params} ${desc} ${node.operator}
-          '   ${indent(2, node.alternatives.map(compile).join("\n|"))}
+          ' ${node.name}${params}${desc} ${node.operator}
+          '   | ${indent(
+            2,
+            node.alternatives.map(compile).join("\n| "),
+            DONT_INDENT_FIRST
+          )}
         `);
       }
 
@@ -210,6 +224,7 @@ function compileVisitor(grammar) {
     });
   }
 
+  return "";
   return flatmap(grammar.rules, compileAction).join("\n");
 }
 

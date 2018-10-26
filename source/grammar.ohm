@@ -15,7 +15,7 @@ Peg {
     = "|"? NonemptyListOf<Action, "|">
 
   Action
-    = Sequence "->" code   -- action
+    = Sequence "-->" code   -- action
     | Sequence             -- no_action
 
   Sequence

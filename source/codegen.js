@@ -92,7 +92,7 @@ function generate(node) {
     '   let private makeParser (source: string, visitor: obj): obj = jsNative
     '
     '   let private visitor = createObj [
-    '     ${indent(4, compileVisitor(node))}
+    '     ${indent(4, compileVisitor(node), DONT_INDENT_FIRST)}
     '   ]
     '
     '   type ParseResult<T> =
@@ -208,14 +208,14 @@ function compileVisitor(grammar) {
     return flatmap(rule.alternatives, (x, i) => {
       if (x.block) {
         const names = x.body
-          .filter(x => !["Negation", "Lookahead"].includes(x.rule.type))
-          .map((a, i) => (a.name ? a.name : `$${i}`))
+          .filter(x => !["Negation", "Lookahead"].includes(x.type))
+          .map((a, i) => (a.name ? a.name : `_${i}`))
           .join(" ");
 
         return [
           code(`
             ' ${string(`${rule.name}_alt${i}`)} ==> fun meta ${names} ->
-            '   ${indent(2, x.block)}
+            '   ${indent(2, x.block, DONT_INDENT_FIRST)}
           `)
         ];
       } else {
@@ -224,7 +224,6 @@ function compileVisitor(grammar) {
     });
   }
 
-  return "";
   return flatmap(grammar.rules, compileAction).join("\n");
 }
 

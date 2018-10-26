@@ -1,6 +1,6 @@
-/**
+/*
 open Some.Namespace
-**/
+*/
 
 Peg : Foo {
   Rule1 = something ";"
@@ -12,11 +12,11 @@ Peg : Foo {
   // Comments are also a thing
   RuleWithAlts = a | b | c | d
 
-  RuleWithAction = x:hello y:world  -> /** f meta y **/
+  RuleWithAction = x:hello y:world  -> /* f meta y */
   RuleWithAltsAndAction
-    = x:hello y:world  -> /** f meta x y **/
+    = x:hello y:world  -> /* f meta x y */
     | some stuff that doesnt use actions
-    | x:another y:action -> /** g meta x y **/
+    | x:another y:action -> /* g meta x y */
 
   ChoicesWithinSequences = a (b | c | d) e
 

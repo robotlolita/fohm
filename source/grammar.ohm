@@ -99,8 +99,7 @@ Peg {
     = hexDigit hexDigit hexDigit hexDigit
 
   string
-    = "\"\"\"" raw_character* "\"\"\""       -- raw
-    | "\"" string_character* "\""            -- double
+    = "\"" string_character* "\""
 
   
   code

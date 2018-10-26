@@ -129,9 +129,9 @@ const cstToAst = {
 
   Base_group: 1,
 
-  string: 0,
-  string_raw: 1,
-  string_double: 1,
+  string(_1, chars, _2) {
+    return chars.toAST(cstToAst).join("");
+  },
   string_character: 0,
   string_character_escaped: 1,
 
@@ -160,7 +160,9 @@ const cstToAst = {
     return "\\";
   },
 
-  code: 1
+  code(_1, text, _2) {
+    return text.sourceString;
+  }
 };
 
 // -- Exports ---------------------------------------------------------

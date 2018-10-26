@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "fable-splitter src/Lisp.fsproj --outDir build"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "fable-splitter": "^2.0.2"
+  },
+  "dependencies": {
+    "ohm-js": "^0.14.0"
+  }
+}

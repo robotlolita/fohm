@@ -1,0 +1,33 @@
+/*
+module Lisp.Grammar
+
+open Lisp.Syntax
+*/
+
+Lisp : LispExpr {
+  Program
+    = forms:Expr*
+      --> /* List(forms) */
+
+  Expr
+    = "(" "define" id:name value:Expr ")"
+      --> /* Define(id, value) */ 
+
+    | "(" "lambda" "[" ids:name* "]" body:Expr* ")"
+      --> /* Lambda(ids, body) */
+    
+    | "(" head:Expr args:Expr* ")"
+      --> /* Call(head, args) */
+
+    | id:name
+      --> /* Symbol(id) */
+
+    | n:number
+      --> /* Number(n) */
+
+  id
+    = letter alnum*
+
+  number
+    = digit+
+}

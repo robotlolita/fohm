@@ -84,10 +84,11 @@ function generate(node) {
   return code(`
     ' // This code was automatically generated from a grammar definition by Fohm.
     '
-    ' open Fable.Core.JsInterop
-    ' module ${id(node.name)} =
-    '   ${indent(2, node.prelude)}
+    ' ${node.prelude}
     '
+    ' open Fable.Core.JsInterop
+    '
+    ' module ${id(node.name)} =
     '   [<Import("*", from="./fohm-runtime.js")>]
     '   let private makeParser (source: string, visitor: obj): obj = jsNative
     '
@@ -95,9 +96,9 @@ function generate(node) {
     '     ${indent(4, compileVisitor(node), DONT_INDENT_FIRST)}
     '   ]
     '
-    '   type ParseResult<T> =
-    '     Ok of T
-    '     Error of string
+    '   type ParseResult<'T> =
+    '     | Ok of T
+    '     | Error of string
     '
     '   let parse (source: string): ParseResult<${id(node.resultType)}> = 
     '     unbox makeParser(

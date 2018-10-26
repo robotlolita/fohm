@@ -4,8 +4,7 @@
 module Lisp.Grammar
 
 open Lisp.Syntax
-
-
+open Fable.Core
 open Fable.Core.JsInterop
 
 module Lisp =
@@ -34,35 +33,35 @@ module Lisp =
   ]
 
   type ParseResult<'T> =
-    | Ok of T
+    | Ok of 'T
     | Error of string
 
-  let parse (source: string): ParseResult<LispExpr> = 
-    unbox makeParser(
-      """
-      Lisp {
-        Program =
-          | Expr* -- alt0
+  // let parse (source: string): ParseResult<LispExpr> = 
+  //   unbox makeParser(
+  //     """
+  //     Lisp {
+  //       Program =
+  //         | Expr* -- alt0
                 
         
-        Expr =
-          | "(" "define" name Expr ")" -- alt0
-          | "(" "lambda" "[" name* "]" Expr* ")" -- alt1
-          | "(" Expr Expr* ")" -- alt2
-          | name -- alt3
-          | number -- alt4
+  //       Expr =
+  //         | "(" "define" name Expr ")" -- alt0
+  //         | "(" "lambda" "[" name* "]" Expr* ")" -- alt1
+  //         | "(" Expr Expr* ")" -- alt2
+  //         | name -- alt3
+  //         | number -- alt4
                 
         
-        id =
-          | letter alnum* -- alt0
+  //       id =
+  //         | letter alnum* -- alt0
                 
         
-        number =
-          | digit+ -- alt0
+  //       number =
+  //         | digit+ -- alt0
                 
-      }
+  //     }
         
-      """, 
-      visitor
-    )
+  //     """, 
+  //     visitor
+  //   )
   

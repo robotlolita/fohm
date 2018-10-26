@@ -42,7 +42,7 @@ const cstToAst = {
       type: "Rule",
       name: name.toAST(cstToAst),
       params: params.toAST(cstToAst),
-      description: desc.toAst(cstToAst),
+      description: desc.toAST(cstToAst),
       operator: op.toAST(cstToAst),
       alternatives: alternatives
         .toAST(cstToAst)

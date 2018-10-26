@@ -2,7 +2,10 @@
   "name": "fohm",
   "version": "1.0.0",
   "description": "Ohm, a PEG parser generator, for Fable, an F#->JS compiler",
-  "main": "index.js",
+  "main": "./source/index.js",
+  "bin": {
+    "fohm": "./source/bin/fohm.js"
+  },
   "directories": {
     "test": "test"
   },

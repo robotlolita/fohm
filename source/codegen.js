@@ -212,3 +212,10 @@ function compileVisitor(grammar) {
 
   return flatmap(grammar.rules, compileAction).join("\n");
 }
+
+module.exports = {
+  generate,
+  compileGrammar,
+  compileOhm,
+  compileVisitor
+};

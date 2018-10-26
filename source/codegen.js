@@ -86,6 +86,7 @@ function generate(node) {
     '
     ' ${node.prelude}
     '
+    ' open Fable.Core
     ' open Fable.Core.JsInterop
     '
     ' module ${id(node.name)} =
@@ -97,7 +98,7 @@ function generate(node) {
     '   ]
     '
     '   type ParseResult<'T> =
-    '     | Ok of T
+    '     | Ok of 'T
     '     | Error of string
     '
     '   let parse (source: string): ParseResult<${id(node.resultType)}> = 

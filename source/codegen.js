@@ -122,11 +122,9 @@ function generate(node) {
     '       visitor
     '     )
     '
-    '   type ParseResult<'T> =
-    '     | Ok of 'T
-    '     | Error of string
-    '
-    '   let parse (source: string): ParseResult<${id(node.resultType)}> = 
+    '   let parse (source: string): ParseResult<${id(
+      node.resultType
+    )}, string> = 
     '     let (success, value) = !!(!!primParser)(source)
     '     if success then Ok(!!value)
     '     else Error(!!value)

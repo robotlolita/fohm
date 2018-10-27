@@ -21,15 +21,21 @@ class CacheEntry {
   constructor(source) {
     /**
      * The source code that this entry represents.
-     * @type {string}
+     * @type string
      */
     this.source = source;
 
     /**
      * A list of pre-computed line offsets.
-     * @type {Array<number>}
+     * @type Array<number>
      */
     this.lines = [];
+
+    /**
+     * A set of line offsets we've already found.
+     * @type Set<number>
+     */
+    this.lineSet = new Set();
   }
 
   /**
@@ -50,7 +56,7 @@ class CacheEntry {
     let lastLine = 0;
     for (const line of this.lines) {
       if (line <= indexPoint) {
-        lastLine = line;
+        lastLine = line + 1;
         count += 1;
       } else {
         break;
@@ -59,7 +65,7 @@ class CacheEntry {
 
     return {
       line: count,
-      column: indexPoint - lastLine
+      column: Math.max(0, indexPoint - lastLine)
     };
   }
 
@@ -73,14 +79,17 @@ class CacheEntry {
     const source = this.source;
     const isNewline = c => c === "\n" || c === "\r";
 
-    const startIndex = last(this.lines) || 0;
+    const startIndex = (last(this.lines) || -1) + 1;
     for (let index = startIndex; index <= indexPoint; ++index) {
       const c = source.charAt(index);
       if (isNewline(c)) {
-        this.lines.push(index);
         // We also need to handle Windows' newlines.
         if (c === "\r" && source.charAt(index + 1) === "\n") {
           index += 1;
+        }
+        if (!this.lineSet.has(index)) {
+          this.lines.push(index);
+          this.lineSet.add(index);
         }
       }
     }
@@ -96,7 +105,7 @@ class SourceCache {
     /**
      * The caches we have available, with the source code as key.
      *
-     * @type {Map<string, CacheEntry>}
+     * @type Map<string, CacheEntry>
      */
     this.cache = new Map();
   }
@@ -136,31 +145,31 @@ class Position {
   constructor(data) {
     /**
      * The original source where this CST node was found.
-     * @type {string}
+     * @type string
      */
     this.sourceString = data.sourceString;
 
     /**
      * The initial character offset of this node.
-     * @type {number}
+     * @type number
      */
     this.startIndex = data.startIdx;
 
     /**
      * The final character offset of this node.
-     * @type {number}
+     * @type number
      */
     this.endIndex = data.endIdx;
 
     /**
      * The starting line/column offset of this node (if computed).
-     * @type {LineOffset | null}
+     * @type LineOffset | null
      */
     this.startPosition = null;
 
     /**
      * The final line/column offset of this node (if computed).
-     * @type {LineOffset | null}
+     * @type LineOffset | null
      */
     this.endPosition = null;
   }
@@ -184,7 +193,10 @@ class Position {
    */
   position() {
     if (this.startPosition == null || this.endPosition == null) {
-      const { start, end } = globalCache.computePosition();
+      const { start, end } = globalCache.computePosition(
+        this.sourceString,
+        this.offset()
+      );
       this.startPosition = start;
       this.endPosition = end;
     }
@@ -193,6 +205,15 @@ class Position {
       start: this.startPosition,
       end: this.endPosition
     };
+  }
+
+  /**
+   * Returns the source slice for this node.
+   *
+   * @returns {string}
+   */
+  get sourceSlice() {
+    return this.sourceString.slice(this.startIndex, this.endIndex);
   }
 }
 
@@ -227,10 +248,10 @@ function makeParser(code, bindings) {
         )((ctx, ...args) => {
           const meta = {
             children: args.map(x => ({
-              source: x.source,
+              source: new Position(x.source),
               rule: x.ctorName
             })),
-            source: ctx.source
+            source: new Position(ctx.source)
           };
           return bindings[x](meta, ...args.map(x => x.toAST(ctx.args.mapping)));
         });

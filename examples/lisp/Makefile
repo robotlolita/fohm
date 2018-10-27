@@ -12,7 +12,7 @@ clean:
 
 
 src/Grammar.fs: grammar/lisp.ohm
-	node $(fohm) compile $< > $@
+	node $(fohm) compile --name Grammar --outDir src/Generated $<
 
 .PHONY: install-packages
 install-packages: paket.dependencies NuGet.Config paket.lock
@@ -28,7 +28,7 @@ build-fsharp: $(FSHARP_SOURCE)
 
 .PHONY: build-to-js
 build-to-js: build-fsharp
-	cp ../../build/fohm-runtime.js build
+	cp src/Generated/fohm-runtime.js build/Generated
 	$(webpack)
 
 

@@ -4,7 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Syntax.fs" />
-    <Compile Include="Grammar.fs" />
+    <Compile Include="Generated/Grammar.fs" />
     <Compile Include="Interpreter.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

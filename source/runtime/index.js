@@ -267,4 +267,6 @@ function makeParser(code, bindings) {
   return parse;
 }
 
-module.exports = makeParser;
+module.exports = {
+  makeParser
+};

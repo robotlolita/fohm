@@ -90,24 +90,30 @@ function generate(node) {
     ' open Fable.Core.JsInterop
     '
     ' module ${id(node.name)} =
-    '   [<Import("*", from="./fohm-runtime.js")>]
+    '   [<Import("makeParser", from="./fohm-runtime.js")>]
     '   let private makeParser (source: string, visitor: obj): obj = jsNative
     '
-    '   let private visitor = createObj [
-    '     ${indent(4, compileVisitor(node), DONT_INDENT_FIRST)}
-    '   ]
+    '   let private visitor = 
+    '     createObj [
+    '       ${indent(6, compileVisitor(node), DONT_INDENT_FIRST)}
+    '     ]
+    '
+    '   let private primParser: obj  =
+    '     makeParser(
+    '       """
+    '       ${indent(6, compileGrammar(node), DONT_INDENT_FIRST)}
+    '       """, 
+    '       visitor
+    '     )
     '
     '   type ParseResult<'T> =
     '     | Ok of 'T
     '     | Error of string
     '
     '   let parse (source: string): ParseResult<${id(node.resultType)}> = 
-    '     !!makeParser(
-    '       """
-    '       ${indent(6, compileGrammar(node), DONT_INDENT_FIRST)}
-    '       """, 
-    '       visitor
-    '     )
+    '     let (success, value) = !!(!!primParser)(source))
+    '     if success then Ok(!!value)
+    '     else Error(!!value)
   `);
 }
 

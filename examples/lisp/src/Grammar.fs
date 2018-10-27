@@ -13,24 +13,40 @@ module Lisp =
   [<Import("makeParser", from="./fohm-runtime.js")>]
   let private makeParser (source: string, visitor: obj): obj = jsNative
 
+  type Offset = 
+    { line: int; column: int }
+
+  type OffsetRecord<'a> =
+    { start: 'a; ``end``: 'a }
+
+  type Position = 
+    {
+      offset: unit -> OffsetRecord<int>
+      position: unit -> OffsetRecord<Offset>
+      sourceSlice: string
+    }
+
+  type Meta = 
+    { source: Position; children: Position list }
+
   let private visitor = 
     createObj [
-      "Program_alt0" ==> fun meta forms ->
+      "Program_alt0" ==> fun (meta:Meta) forms ->
          List(forms) 
                 
-      "Expr_alt0" ==> fun meta _0 _1 id value _4 ->
+      "Expr_alt0" ==> fun (meta:Meta) _0 _1 id value _4 ->
          Define(id, value) 
                 
-      "Expr_alt1" ==> fun meta _0 _1 _2 ids _4 body _6 ->
+      "Expr_alt1" ==> fun (meta:Meta) _0 _1 _2 ids _4 body _6 ->
          Lambda(ids, body) 
                 
-      "Expr_alt2" ==> fun meta _0 head args _3 ->
+      "Expr_alt2" ==> fun (meta:Meta) _0 head args _3 ->
          Call(head, args) 
                 
-      "Expr_alt3" ==> fun meta id ->
+      "Expr_alt3" ==> fun (meta:Meta) id ->
          Symbol(id) 
                 
-      "Expr_alt4" ==> fun meta n ->
+      "Expr_alt4" ==> fun (meta:Meta) n ->
          Number(n) 
                 
     ]

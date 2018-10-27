@@ -30,3 +30,9 @@ build-fsharp: $(FSHARP_SOURCE)
 build-to-js: build-fsharp
 	cp ../../build/fohm-runtime.js build
 	$(webpack)
+
+
+# Force-rebuilding
+rebuild-grammar:
+	touch grammar/lisp.ohm
+	$(MAKE) src/Grammar.fs

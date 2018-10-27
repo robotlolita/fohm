@@ -93,6 +93,22 @@ function generate(node) {
     '   [<Import("makeParser", from="./fohm-runtime.js")>]
     '   let private makeParser (source: string, visitor: obj): obj = jsNative
     '
+    '   type Offset = 
+    '     { line: int; column: int }
+    '
+    '   type OffsetRecord<'a> =
+    '     { start: 'a; \`\`end\`\`: 'a }
+    '
+    '   type Position = 
+    '     {
+    '       offset: unit -> OffsetRecord<int>
+    '       position: unit -> OffsetRecord<Offset>
+    '       sourceSlice: string
+    '     }
+    '
+    '   type Meta = 
+    '     { source: Position; children: Position list }
+    '
     '   let private visitor = 
     '     createObj [
     '       ${indent(6, compileVisitor(node), DONT_INDENT_FIRST)}
@@ -222,7 +238,7 @@ function compileVisitor(grammar) {
 
         return [
           code(`
-            ' ${string(`${rule.name}_alt${i}`)} ==> fun meta ${names} ->
+            ' ${string(`${rule.name}_alt${i}`)} ==> fun (meta:Meta) ${names} ->
             '   ${indent(2, x.block, DONT_INDENT_FIRST)}
           `)
         ];

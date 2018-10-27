@@ -247,10 +247,7 @@ function makeParser(code, bindings) {
           )}) }`
         )((ctx, ...args) => {
           const meta = {
-            children: args.map(x => ({
-              source: new Position(x.source),
-              rule: x.ctorName
-            })),
+            children: args.map(x => new Position(x.source)),
             source: new Position(ctx.source)
           };
           return bindings[x](meta, ...args.map(x => x.toAST(ctx.args.mapping)));

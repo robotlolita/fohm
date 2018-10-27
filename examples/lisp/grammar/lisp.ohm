@@ -25,7 +25,7 @@ Lisp : LispExpr {
     | n:number
       --> /* Number(n) */
 
-  id
+  name
     = letter alnum*
 
   number

@@ -32,22 +32,22 @@ module Lisp =
   let private visitor = 
     createObj [
       "Program_alt0" ==> fun (meta:Meta) forms ->
-         List(forms) 
+         List(unbox meta.source, forms) 
                 
       "Expr_alt0" ==> fun (meta:Meta) _0 _1 id value _4 ->
-         Define(id, value) 
+         Define(unbox meta.source, id, value) 
                 
       "Expr_alt1" ==> fun (meta:Meta) _0 _1 _2 ids _4 body _6 ->
-         Lambda(ids, body) 
+         Lambda(unbox meta.source, ids, body) 
                 
       "Expr_alt2" ==> fun (meta:Meta) _0 head args _3 ->
-         Call(head, args) 
+         Call(unbox meta.source, head, args) 
                 
       "Expr_alt3" ==> fun (meta:Meta) id ->
-         Symbol(id) 
+         Symbol(unbox meta.source, id) 
                 
       "Expr_alt4" ==> fun (meta:Meta) n ->
-         Number(n) 
+         Number(unbox meta.source, n) 
                 
     ]
 
@@ -80,11 +80,7 @@ module Lisp =
       visitor
     )
 
-  type ParseResult<'T> =
-    | Ok of 'T
-    | Error of string
-
-  let parse (source: string): ParseResult<LispExpr> = 
+  let parse (source: string): Result<LispExpr, string> = 
     let (success, value) = !!(!!primParser)(source)
     if success then Ok(!!value)
     else Error(!!value)

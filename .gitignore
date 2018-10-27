@@ -3,3 +3,4 @@ build/
 paket-files/
 target/
 obj/
+dist/

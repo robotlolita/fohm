@@ -70,4 +70,5 @@ Fohm solves this by merging semantic actions with the grammar definition again. 
 ## Licence
 
 Copyright (c) 2018 Quil. Licensed under MIT.
+
 Ohm is (c) 2014-2018 Alessandro Warth and the Ohm project contributors.

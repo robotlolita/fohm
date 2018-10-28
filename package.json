@@ -1,5 +1,5 @@
 {
-  "name": "fohm",
+  "name": "@origamitower/fohm",
   "version": "1.0.0",
   "description": "Ohm, a PEG parser generator, for Fable, an F#->JS compiler",
   "main": "./source/index.js",

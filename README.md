@@ -59,7 +59,7 @@ You can find complete examples in the `examples` folder.
 
 ## Why?
 
-Ohm's design one major problem, in particular for static languages: **[Modular semantic actions](https://ohmlang.github.io/pubs/dls2016/modular-semantic-actions.pdf)**.
+Ohm's design has one major problem, in particular for static languages: [Modular semantic actions](https://ohmlang.github.io/pubs/dls2016/modular-semantic-actions.pdf).
 
 Ohm separates semantic actions from the grammar description. In a sense this makes grammars easier to read and more modular. It also helps with Ohm's concept of extensible grammars (particularly because it ties that to inheritance).
 

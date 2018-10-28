@@ -1,6 +1,8 @@
 # Fohm
 
-Fohm is a PEG parser generator for Fable (meaning it'll only work with F# compiled to JavaScript using Fable. Sorry). It's based on the [Ohm](https://ohmlang.github.io/) library, which uses PEG and supports left-recursive rules.
+Fohm is a PEG parser generator for Fable 1 (meaning it'll only work with F# compiled to JavaScript using Fable 1. Sorry). It's based on the [Ohm](https://ohmlang.github.io/) library, which uses PEG and supports left-recursive rules.
+
+(It'll support Fable 2 when I figure out how its JS interop stuff works...)
 
 Until I've the time to write proper documentation for this project, you can look at [Ohm's documentation](https://github.com/harc/ohm/blob/master/doc/index.md) for the parsing syntax and semantics. The two major differences is that Fohm allows providing a prelude for the generated code, and inlining semantic actions in the grammar. Each semantic action gets a special `meta` variable, which contains meta-information about the node.
 

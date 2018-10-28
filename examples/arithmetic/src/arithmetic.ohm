@@ -1,0 +1,20 @@
+/*
+namespace Arith.Syntax
+
+type Expr =
+  | Add of Expr * Expr
+  | Sub of Expr * Expr
+  | Num of int
+
+*/
+
+Arithmetic : Expr {
+  Expr
+    = l:Expr "+" r:Expr     --> /* Add(l, r) */
+    | l:Expr "-" r:Expr     --> /* Sub(l, r) */
+    | n:number              --> /* Num(int n) */
+    | "(" e:Expr ")"        --> /* e */
+
+  number
+    = digit+
+}

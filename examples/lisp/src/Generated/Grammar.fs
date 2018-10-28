@@ -6,6 +6,7 @@ namespace Lisp.Grammar
 open Lisp.Syntax
 
 
+
 open Fable.Core
 open Fable.Core.JsInterop
 
@@ -47,7 +48,7 @@ module Lisp =
          Symbol(unbox meta.source, id) 
                 
       "Expr_alt4" ==> fun (meta:Meta) n ->
-         Number(unbox meta.source, n) 
+         Number(unbox meta.source, int n) 
                 
     ]
 

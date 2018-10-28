@@ -2,6 +2,7 @@
 namespace Lisp.Grammar
 
 open Lisp.Syntax
+
 */
 
 Lisp : LispExpr {
@@ -23,7 +24,7 @@ Lisp : LispExpr {
       --> /* Symbol(unbox meta.source, id) */
 
     | n:number
-      --> /* Number(unbox meta.source, n) */
+      --> /* Number(unbox meta.source, int n) */
 
   name
     = letter alnum*

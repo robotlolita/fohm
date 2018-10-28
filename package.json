@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/robotlolita/fohm.git"
+    "url": "git+https://github.com/origamitower/fohm.git"
   },
   "keywords": [
     "fable",
@@ -35,7 +35,7 @@
   "author": "Quil",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/robotlolita/fohm/issues"
+    "url": "https://github.com/origamitower/fohm/issues"
   },
-  "homepage": "https://github.com/robotlolita/fohm#readme"
+  "homepage": "https://github.com/origamitower/fohm#readme"
 }

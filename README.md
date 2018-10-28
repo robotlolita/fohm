@@ -4,6 +4,16 @@ Fohm is a PEG parser generator for Fable (meaning it'll only work with F# compil
 
 Until I've the time to write proper documentation for this project, you can look at [Ohm's documentation](https://github.com/harc/ohm/blob/master/doc/index.md) for the parsing syntax and semantics. The two major differences is that Fohm allows providing a prelude for the generated code, and inlining semantic actions in the grammar. Each semantic action gets a special `meta` variable, which contains meta-information about the node.
 
+## Installing
+
+You can install Fohm with npm:
+
+```
+npm install @origamitower/fohm
+```
+
+This will give you the `fohm` command line application in `node_modules/.bin`
+
 ## Getting started
 
 Define a grammar using Fohm's extended Ohm syntax:

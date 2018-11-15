@@ -127,7 +127,10 @@ const cstToAst = {
     value: 0
   },
 
-  Base_group: 1,
+  Base_group: {
+    type: "Group",
+    value: 1
+  },
 
   string(_1, chars, _2) {
     return chars.toAST(cstToAst).join("");

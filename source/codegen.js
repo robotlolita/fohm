@@ -171,7 +171,9 @@ function compileOhm(grammar) {
       }
 
       case "Choice":
-        return node.items.map(xs => xs.map(compile).join(" ")).join(" | ");
+        return node.alternatives
+          .map(xs => xs.map(compile).join(" "))
+          .join(" | ");
 
       case "Binding":
         return compile(node.rule);
@@ -198,7 +200,7 @@ function compileOhm(grammar) {
         return `#${compile(node.rule)}`;
 
       case "Apply": {
-        const args = node.args ? `<${node.args.join(", ")}>` : "";
+        const args = node.args ? `<${node.args.map(compile).join(", ")}>` : "";
         return `${node.rule}${args}`;
       }
 
@@ -207,6 +209,9 @@ function compileOhm(grammar) {
 
       case "Literal":
         return `${string(node.value)}`;
+
+      case "Group":
+        return `(${compile(node.value)})`;
 
       default:
         throw new Error(`Unknown node ${node.type}`);

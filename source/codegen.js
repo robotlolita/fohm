@@ -83,49 +83,49 @@ function generate(node) {
 
   return code(`
     ' // This code was automatically generated from a grammar definition by Fohm.
+    ' module Fohm.Generated.${id(node.name)} =
+    '
+    ' type Offset = 
+    '   { line: int; column: int }
+    '
+    ' type OffsetRecord<'a> =
+    '   { start: 'a; \`\`end\`\`: 'a }
+    '
+    ' type Position = 
+    '   {
+    '     offset: unit -> OffsetRecord<int>
+    '     position: unit -> OffsetRecord<Offset>
+    '     sourceSlice: string
+    '   }
+    '
+    ' type Meta = 
+    '   { source: Position; children: Position list }
     '
     ' ${node.prelude}
     '
     ' open Fable.Core
     ' open Fable.Core.JsInterop
     '
-    ' module ${id(node.name)} =
-    '   [<Import("makeParser", from="./fohm-runtime.js")>]
-    '   let private makeParser (source: string, visitor: obj): obj = jsNative
+    ' [<Import("makeParser", from="./fohm-runtime.js")>]
+    ' let private makeParser (source: string, visitor: obj): obj = jsNative
     '
-    '   type Offset = 
-    '     { line: int; column: int }
+    ' let private visitor = 
+    '   createObj [
+    '     ${indent(6, compileVisitor(node), DONT_INDENT_FIRST)}
+    '   ]
     '
-    '   type OffsetRecord<'a> =
-    '     { start: 'a; \`\`end\`\`: 'a }
+    ' let private primParser: obj  =
+    '   makeParser(
+    '     """
+    '     ${indent(6, compileGrammar(node), DONT_INDENT_FIRST)}
+    '     """, 
+    '     visitor
+    '   )
     '
-    '   type Position = 
-    '     {
-    '       offset: unit -> OffsetRecord<int>
-    '       position: unit -> OffsetRecord<Offset>
-    '       sourceSlice: string
-    '     }
-    '
-    '   type Meta = 
-    '     { source: Position; children: Position list }
-    '
-    '   let private visitor = 
-    '     createObj [
-    '       ${indent(6, compileVisitor(node), DONT_INDENT_FIRST)}
-    '     ]
-    '
-    '   let private primParser: obj  =
-    '     makeParser(
-    '       """
-    '       ${indent(6, compileGrammar(node), DONT_INDENT_FIRST)}
-    '       """, 
-    '       visitor
-    '     )
-    '
-    '   let parse (source: string): Result<${id(node.resultType)}, string> = 
-    '     let (success, value) = !!(!!primParser)(source)
-    '     if success then Ok(!!value)
-    '     else Error(!!value)
+    ' let parse (source: string): Result<${id(node.resultType)}, string> = 
+    '   let (success, value) = !!(!!primParser)(source)
+    '   if success then Ok(!!value)
+    '   else Error(!!value)
   `);
 }
 

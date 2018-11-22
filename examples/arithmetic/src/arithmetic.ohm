@@ -1,5 +1,4 @@
 /*
-namespace Arith.Syntax
 
 type Expr =
   | Add of Expr * Expr

@@ -1,7 +1,23 @@
 // This code was automatically generated from a grammar definition by Fohm.
+module Fohm.Generated.Lisp =
+
+type Offset = 
+  { line: int; column: int }
+
+type OffsetRecord<'a> =
+  { start: 'a; ``end``: 'a }
+
+type Position = 
+  {
+    offset: unit -> OffsetRecord<int>
+    position: unit -> OffsetRecord<Offset>
+    sourceSlice: string
+  }
+
+type Meta = 
+  { source: Position; children: Position list }
 
 
-namespace Lisp.Grammar
 
 open Lisp.Syntax
 
@@ -10,29 +26,12 @@ open Lisp.Syntax
 open Fable.Core
 open Fable.Core.JsInterop
 
-module Lisp =
-  [<Import("makeParser", from="./fohm-runtime.js")>]
-  let private makeParser (source: string, visitor: obj): obj = jsNative
+[<Import("makeParser", from="./fohm-runtime.js")>]
+let private makeParser (source: string, visitor: obj): obj = jsNative
 
-  type Offset = 
-    { line: int; column: int }
-
-  type OffsetRecord<'a> =
-    { start: 'a; ``end``: 'a }
-
-  type Position = 
-    {
-      offset: unit -> OffsetRecord<int>
-      position: unit -> OffsetRecord<Offset>
-      sourceSlice: string
-    }
-
-  type Meta = 
-    { source: Position; children: Position list }
-
-  let private visitor = 
-    createObj [
-      "Program_alt0" ==> fun (meta:Meta) forms ->
+let private visitor = 
+  createObj [
+    "Program_alt0" ==> fun (meta:Meta) forms ->
          List(unbox meta.source, forms) 
                 
       "Expr_alt0" ==> fun (meta:Meta) _0 _1 id value _4 ->
@@ -50,12 +49,12 @@ module Lisp =
       "Expr_alt4" ==> fun (meta:Meta) n ->
          Number(unbox meta.source, int n) 
                 
-    ]
+  ]
 
-  let private primParser: obj  =
-    makeParser(
-      """
-      Lisp {
+let private primParser: obj  =
+  makeParser(
+    """
+    Lisp {
         Program =
           | Expr* -- alt0
                 
@@ -77,12 +76,12 @@ module Lisp =
                 
       }
         
-      """, 
-      visitor
-    )
+    """, 
+    visitor
+  )
 
-  let parse (source: string): Result<LispExpr, string> = 
-    let (success, value) = !!(!!primParser)(source)
-    if success then Ok(!!value)
-    else Error(!!value)
+let parse (source: string): Result<LispExpr, string> = 
+  let (success, value) = !!(!!primParser)(source)
+  if success then Ok(!!value)
+  else Error(!!value)
   

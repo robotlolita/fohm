@@ -1,5 +1,4 @@
 /*
-namespace Lisp.Grammar
 
 open Lisp.Syntax
 

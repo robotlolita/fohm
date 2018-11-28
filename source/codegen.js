@@ -111,13 +111,13 @@ function generate(node) {
     '
     ' let private visitor = 
     '   createObj [
-    '     ${indent(6, compileVisitor(node), DONT_INDENT_FIRST)}
+    '     ${indent(4, compileVisitor(node), DONT_INDENT_FIRST)}
     '   ]
     '
     ' let private primParser: obj  =
     '   makeParser(
     '     """
-    '     ${indent(6, compileGrammar(node), DONT_INDENT_FIRST)}
+    '     ${indent(4, compileGrammar(node), DONT_INDENT_FIRST)}
     '     """, 
     '     visitor
     '   )

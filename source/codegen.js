@@ -99,7 +99,7 @@ function generate(node) {
     '   }
     '
     ' type Meta = 
-    '   { source: Position; children: Position list }
+    '   { source: Position; children: Position[] }
     '
     ' ${node.prelude}
     '

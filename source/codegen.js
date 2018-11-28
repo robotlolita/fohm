@@ -83,7 +83,7 @@ function generate(node) {
 
   return code(`
     ' // This code was automatically generated from a grammar definition by Fohm.
-    ' module Fohm.Generated.${id(node.name)} =
+    ' module Fohm.Generated.${id(node.name)}
     '
     ' type Offset = 
     '   { line: int; column: int }

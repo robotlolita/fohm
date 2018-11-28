@@ -31,10 +31,26 @@ function parse(source) {
 const cstToAst = {
   Grammar: {
     type: "Grammar",
-    prelude: 0,
-    name: 1,
-    resultType: 3,
-    rules: 5
+    header: 0,
+    prelude: 1,
+    name: 2,
+    resultType: 4,
+    rules: 6
+  },
+
+  Header: {
+    key: 1,
+    value: 3
+  },
+
+  HeaderValue_text: {
+    type: "text",
+    value: 0
+  },
+
+  HeaderValue_qualified: {
+    type: "name",
+    value: 0
   },
 
   Rule(name, params, desc, op, alternatives) {

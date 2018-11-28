@@ -1,6 +1,13 @@
 Peg {
   Grammar
-    = code id ":" id "{" Rule* "}"
+    = Header* code id ":" id "{" Rule* "}"
+
+  Header
+    = "%" id ":" HeaderValue
+
+  HeaderValue
+    = string                      -- text
+    | NonemptyListOf<id, ".">     -- qualified
 
   Rule
     = id Formals? Description? op Alternative
@@ -16,10 +23,10 @@ Peg {
 
   Action
     = Sequence "-->" code   -- action
-    | Sequence             -- no_action
+    | Sequence              -- no_action
 
   Sequence
-    = Binding+
+    = Binding*
 
   Choice
     = NonemptyListOf<Sequence, "|">  -- choice

@@ -76,7 +76,7 @@ const cstToAst = {
   Action_action: {
     type: "Action",
     body: 0,
-    block: 2
+    block: 1
   },
 
   Action_no_action: {

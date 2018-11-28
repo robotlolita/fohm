@@ -6,7 +6,7 @@ Peg {
     = "%" id ":" HeaderValue
 
   HeaderValue
-    = string                      -- text
+    = String                      -- text
     | NonemptyListOf<id, ".">     -- qualified
 
   Rule

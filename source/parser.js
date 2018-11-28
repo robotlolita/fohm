@@ -148,35 +148,8 @@ const cstToAst = {
     value: 1
   },
 
-  string(_1, chars, _2) {
-    return chars.toAST(cstToAst).join("");
-  },
-  string_character: 0,
-  string_character_escaped: 1,
-
-  escape_sequence_backspace(_) {
-    return "\b";
-  },
-  escape_sequence_form_feed(_) {
-    return "\f";
-  },
-  escape_sequence_newline(_) {
-    return "\n";
-  },
-  escape_sequence_return(_) {
-    return "\r";
-  },
-  escape_sequence_tab(_) {
-    return "\t";
-  },
-  escape_sequence_unicode(_, hex) {
-    return String.fromCodePoint(parseInt(hex.toAST(cstToAst), 16));
-  },
-  escape_sequence_quote(_) {
-    return '"';
-  },
-  escape_sequence_backslash(_) {
-    return "\\";
+  String(value) {
+    return JSON.parse(value.sourceString);
   },
 
   code(_1, text, _2) {

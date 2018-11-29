@@ -1,6 +1,6 @@
 ﻿module LispProgram
 
-open Lisp.Grammar
+open Fohm.Generated
 open Lisp.Syntax
 open Lisp.Interpreter
 
@@ -12,7 +12,9 @@ let program = """
   (print (mul 3 (square (add one two))))
 """
 
-match Lisp.parse program with
+let parse source = Lisp.parse "Program" source { filename = None }
+
+match parse program with
 | Error(msg) ->
     failwithf "%s" msg
 | Ok(expr) ->

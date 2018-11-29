@@ -789,7 +789,7 @@ module.exports={
   "_resolved": "https://registry.npmjs.org/ohm-js/-/ohm-js-0.14.0.tgz",
   "_shasum": "ef5dbe33d493407916f8c4c12115161872c2bc0d",
   "_spec": "ohm-js",
-  "_where": "/home/quil/Projects/Purr/fohm",
+  "_where": "/home/quil/Projects/Palette/fohm",
   "author": {
     "name": "Alex Warth",
     "email": "alexwarth@gmail.com",
@@ -7179,7 +7179,7 @@ const globalCache = new SourceCache();
  * and allows lazily computing the line/column offsets.
  */
 class Position {
-  constructor(data) {
+  constructor(data, { filename = null }) {
     /**
      * The original source where this CST node was found.
      * @type string
@@ -7209,6 +7209,12 @@ class Position {
      * @type LineOffset | null
      */
     this.endPosition = null;
+
+    /**
+     * The filename from which this source was parsed.
+     * @type string | null
+     */
+    this.filename = filename;
   }
 
   /**
@@ -7265,7 +7271,7 @@ class Position {
 function makeParser(code, bindings) {
   const grammar = Ohm.grammar(code);
 
-  const parse = (source, rule) => {
+  const parse = (source, rule, { filename }) => {
     const match = grammar.match(source, rule);
     if (match.failed()) {
       return [false, match.message];
@@ -7284,11 +7290,8 @@ function makeParser(code, bindings) {
           )}) }`
         )((ctx, ...args) => {
           const meta = {
-            children: args.map(x => ({
-              source: new Position(x.source),
-              rule: x.ctorName
-            })),
-            source: new Position(ctx.source)
+            children: args.map(x => new Position(x.source, { filename })),
+            source: new Position(ctx.source, { filename })
           };
           return bindings[x](meta, ...args.map(x => x.toAST(ctx.args.mapping)));
         });

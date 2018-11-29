@@ -1,29 +1,27 @@
-/*
-
+%[
 open Lisp.Syntax
-
-*/
+]%
 
 Lisp : LispExpr {
   Program
     = forms:Expr*
-      --> /* List(unbox meta.source, forms) */
+      %[ List(unbox meta.source, forms) ]%
 
   Expr
     = "(" "define" id:name value:Expr ")"
-      --> /* Define(unbox meta.source, id, value) */ 
+      %[ Define(unbox meta.source, id, value) ]%
 
     | "(" "lambda" "[" ids:name* "]" body:Expr* ")"
-      --> /* Lambda(unbox meta.source, ids, body) */
+      %[ Lambda(unbox meta.source, ids, body) ]%
     
     | "(" head:Expr args:Expr* ")"
-      --> /* Call(unbox meta.source, head, args) */
+      %[ Call(unbox meta.source, head, args) ]%
 
     | id:name
-      --> /* Symbol(unbox meta.source, id) */
+      %[ Symbol(unbox meta.source, id) ]%
 
     | n:number
-      --> /* Number(unbox meta.source, int n) */
+      %[ Number(unbox meta.source, int n) ]%
 
   name
     = letter alnum*

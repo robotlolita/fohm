@@ -103,6 +103,9 @@ function generate(node) {
     ' type Meta = 
     '   { source: Position; children: Meta[] }
     '
+    ' type ParseOptions =
+    '   { filename: string option }
+    '
     ' ${node.prelude}
     '
     ' open Fable.Core
@@ -124,8 +127,10 @@ function generate(node) {
     '     visitor
     '   )
     '
-    ' let parse (source: string): Result<${id(node.resultType)}, string> = 
-    '   let (success, value) = !!(!!primParser)(source)
+    ' let parse (rule: string) (source: string) (options: ParseOptions): Result<${id(
+      node.resultType
+    )}, string> = 
+    '   let (success, value) = !!(!!primParser)(source, rule, options)
     '   if success then Ok(!!value)
     '   else Error(!!value)
   `);

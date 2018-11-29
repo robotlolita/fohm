@@ -96,10 +96,12 @@ function generate(node) {
     '     offset: unit -> OffsetRecord<int>
     '     position: unit -> OffsetRecord<Offset>
     '     sourceSlice: string
+    '     sourceString: string
+    '     filename: string option
     '   }
     '
     ' type Meta = 
-    '   { source: Position; children: Position[] }
+    '   { source: Position; children: Meta[] }
     '
     ' ${node.prelude}
     '

@@ -101,7 +101,7 @@ function generate(node) {
     '   }
     '
     ' type Meta = 
-    '   { source: Position; children: Meta[] }
+    '   { source: Position; children: Position[] }
     '
     ' type ParseOptions =
     '   { filename: string option }
@@ -130,7 +130,7 @@ function generate(node) {
     ' let parse (rule: string) (source: string) (options: ParseOptions): Result<${id(
       node.resultType
     )}, string> = 
-    '   let (success, value) = !!(!!primParser)(source, rule, options)
+    '   let (success, value) = !!(primParser$(source, rule, options))
     '   if success then Ok(!!value)
     '   else Error(!!value)
   `);
